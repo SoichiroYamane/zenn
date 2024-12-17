@@ -120,7 +120,7 @@ Dockerコンテナ内からは`exit`で抜けることができます。
 正しく書き込みができたら、keyballを試してみましょう。🎉
 viaは`keyball/keyball39/keymaps/via/rules.mk`に`VIA_ENABLE = yes`が記述されているため、Remapなどのサービスで設定を変更することができます。私のキーマップでは、メモリ不足のためこのVIAを無効にしています。
 
-# キーマップを変更してみよう
+# 5. キーマップを変更してみよう
 
 `keyball/keyball39/keymaps/via`をコピーして、`keyball/keyball39/keymaps/via_test`という名前で保存しましょう。その後、`keyball/keyball39/keymaps/via_test/keymap.c`を編集して、以下のようにキーマップを変更してみましょう。`KC_W`と`KC_Q`を入れ替えてみました。
 
