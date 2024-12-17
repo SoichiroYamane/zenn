@@ -10,7 +10,7 @@ published: false
 
 初めてzennに投稿しますので、何かしら誤植があるかもしれませんが、ご容赦ください。🙌
 
-keyballを使っている方は、remapによってキーマップを変更することができます。しかし、remap上でのキーマップ変更は少しばかり制約が多く、keyballの能力を最大限引き出すためには、QMK Firmwareを利用して詳細な設定を行うことが求められます。QMK Firmwareでは、キーマップの変更だけでなく、トラックボール、LEDの制御やマクロの設定などがC言語を用いて記述することにより可能になります。しかし、これらの環境を構築するためには少しばかりめんどくさい面や、ローカル環境が汚くなる側面があります。そこで、本記事ではDockerを使用することで、keyball用のQMK Firmwareを構築し、ビルドする方法を紹介します。✨
+keyballを使っている方は、remapによってキーマップを変更することができます。しかし、remap上でのキーマップ変更は少しばかり制約が多く、keyballの能力を最大限引き出すためには、QMK Firmwareを利用して詳細な設定を行うことが求められます。QMK Firmwareでは、キーマップの変更だけでなく、トラックボール、LEDの制御やマクロの設定などがC言語を用いて可能になります。しかし、これらの環境を構築するためには少しばかりめんどくさい面や、ローカル環境が汚くなる側面があります。そこで、本記事ではDockerを使用することで、爆速でkeyball用のQMK Firmwareを構築し、ビルドする方法を紹介します。✨
 
 この記事はkeyball39🎱で記事を書いています。
 記事の最後に私の使用しているkeyball39🎱のキーマップを公開しています。
@@ -30,7 +30,7 @@ keyballを使っている方は、remapによってキーマップを変更す�
 
 - Dockerを使用することで、ローカル環境を汚すことなく、keyball用のQMK Firmwareをビルドすることができる。
 
-# 0.事前準備
+# 0. 事前準備
 
 Dockerのインストールは完了しているものとします。Windowsではパワーシェル(もしくはコマンドプロンプト)、MacではターミナルでDockerが使えることを確認してください。現在の私のDockerのバージョンは以下の通りです。
 
@@ -44,11 +44,11 @@ Docker version 27.2.0, build 3ab4256
 
 また、`docker compose`のコマンドも実行できることを確認してください。
 
-# 1.Dockerファイルのダウンロード
+# 1. Dockerファイルのダウンロード
 
 Dockerファイルなどは以下のリポジトリこちらの[リポジトリ](https://github.com/SoichiroYamane/qmk-docker-keyball)に置いております。ダウンロードをするには、`git clone`でもいいですし、手動で`< > Code` -> `Download ZIP`してから展開でも構いません。
 
-# 2.Dockerイメージのビルドおよびコンテナの起動
+# 2. Dockerイメージのビルドおよびコンテナの起動
 
 ダウンロードしたファイルのディレクトリ(写真ではqmk-testとなっていますが、デフォルトではqmk-docker-keyballです。)に移動し、以下のコマンドを実行してください。実行をすると、写真のようなログが表示されると思います。また、ビルドには時間がかかるので、コーヒーでも飲みながら気長に待ちましょう。
 
@@ -68,7 +68,7 @@ docker compose up -d --build
 docker compose exec qmk-docker-keyball fish
 ```
 
-# 3.keyballのファームウェアのビルド
+# 3. keyballのファームウェアのビルド
 
 コンテナに入ると、ホスト側(ローカルのパソコンの環境)のディレクトリにkeyballというディレクトリが作成されていると思います。エクスプローラーもしくはファインダーで確認してください。
 
@@ -100,7 +100,7 @@ make SKIP_GIT=yes keyball/keyball39:via
 
 Dockerコンテナ内からは`exit`で抜けることができます。
 
-# 4.ファームウェアの書き込み
+# 4. ファームウェアの書き込み
 
 ビルドされたファームウェアをkeyballに書き込むために、以下のツールを使用します。
 
@@ -117,15 +117,17 @@ Dockerコンテナ内からは`exit`で抜けることができます。
 - リセットボタンは素早く2回押すことでPro Microがブートローダーモードになります。
 - Pro Micro Web Updaterで認識されない場合は、リセットボタンを2回を押す。
 
-正しく書き込みができたら、keyballを試してみましょう。🎉viaは`keyball/keyball39/keymaps/via/rules.mk`に`VIA_ENABLE = yes`が記述されているため、Remapなどのサービスで設定を変更することができます。私のキーマップでは、メモリ不足のためこのVIAを無効にしています。
+正しく書き込みができたら、keyballを試してみましょう。🎉
+viaは`keyball/keyball39/keymaps/via/rules.mk`に`VIA_ENABLE = yes`が記述されているため、Remapなどのサービスで設定を変更することができます。私のキーマップでは、メモリ不足のためこのVIAを無効にしています。
 
 # キーマップを変更してみよう
 
 `keyball/keyball39/keymaps/via`をコピーして、`keyball/keyball39/keymaps/via_test`という名前で保存しましょう。その後、`keyball/keyball39/keymaps/via_test/keymap.c`を編集して、以下のようにキーマップを変更してみましょう。`KC_W`と`KC_Q`を入れ替えてみました。
 
-```c
+```diff c
   [0] = LAYOUT_universal(
-    KC_W     , KC_Q     , KC_E     , KC_R     , KC_T     ,                            KC_Y     , KC_U     , KC_I     , KC_O     , KC_P     ,
+-   KC_Q     , KC_W     , KC_E     , KC_R     , KC_T     ,                            KC_Y     , KC_U     , KC_I     , KC_O     , KC_P     ,
++   KC_W     , KC_Q     , KC_E     , KC_R     , KC_T     ,                            KC_Y     , KC_U     , KC_I     , KC_O     , KC_P     ,
     KC_A     , KC_S     , KC_D     , KC_F     , KC_G     ,                            KC_H     , KC_J     , KC_K     , KC_L     , KC_MINS  ,
     KC_Z     , KC_X     , KC_C     , KC_V     , KC_B     ,                            KC_N     , KC_M     , KC_COMM  , KC_DOT   , KC_SLSH  ,
     KC_LCTL  , KC_LGUI  , KC_LALT  ,LSFT_T(KC_LNG2),LT(1,KC_SPC),LT(3,KC_LNG1),KC_BSPC,LT(2,KC_ENT),LSFT_T(KC_LNG2),KC_RALT,KC_RGUI, KC_RSFT
@@ -147,7 +149,7 @@ make SKIP_GIT=yes keyball/keyball39:via_test
 
 # おわりに
 
-Dockerを使用することで、ローカル環境を汚すことなく、keyball用のQMK Firmwareをビルドすることができました。もし問題などがあれば、お気軽にコメント、もしくはgithubでissueを立てていただければと思います。
+Dockerを使用することで、ローカル環境を汚すことなく、keyball用のQMK Firmwareをビルドすることができました。もし問題などがあれば、お気軽にコメント、もしくはgithubでissueを立てていただければと思います。また、記事にいいねや、リポジトリにスターをいただけると励みになります。最後まで読んでいただき、ありがとうございました。🙇
 
 ## 私のキーマップ
 
