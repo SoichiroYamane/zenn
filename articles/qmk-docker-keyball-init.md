@@ -46,7 +46,7 @@ Docker version 27.2.0, build 3ab4256
 
 # 1. Dockerファイルのダウンロード
 
-Dockerファイルなどは以下のリポジトリこちらの[リポジトリ](https://github.com/SoichiroYamane/qmk-docker-keyball)に置いております。ダウンロードをするには、`git clone`でもいいですし、手動で`< > Code` -> `Download ZIP`してから展開でも構いません。
+Dockerファイルなどはこちらの[リポジトリ](https://github.com/SoichiroYamane/qmk-docker-keyball)に置いております。ダウンロードをするには、`git clone`でもいいですし、手動で`< > Code` -> `Download ZIP`してから展開でも構いません。
 
 # 2. Dockerイメージのビルドおよびコンテナの起動
 
